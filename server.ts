@@ -7,19 +7,21 @@ import * as express from 'express';
 var mongoose = require('mongoose');
 
 import router from './router';
+import {mongoURI, port} from "./config";
 
 const server = http.createServer(router);
 //const io = socketIo(http)
 
 router.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/PropertyManagement', { useNewUrlParser: true });
+mongoose.connect(mongoURI, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log('Connected to MongoDB')
 })
 
+server.listen(port, ()=>console.log("server is running on port"+port));
 // io2.on('connection', function(socket) {
 //     console.log('a user connected');
 //
@@ -38,4 +40,3 @@ db.once('open', function() {
 //
 //
 // io2.listen(4001 );
-server.listen(4000, ()=>console.log("server is running on port 4000"));
